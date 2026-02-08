@@ -1,0 +1,26 @@
+{
+  "timestamp": "20260208_145153",
+  "accuracy": 1.0,
+  "feature_names": [
+    "cgpa",
+    "aptitude_score",
+    "coding_skill",
+    "communication_skill",
+    "mock_interview_score",
+    "internships"
+  ],
+  "label_map": {
+    "Not Ready": 0,
+    "Ready": 1
+  },
+  "confusion_matrix": [
+    [
+      91,
+      0
+    ],
+    [
+      0,
+      9
+    ]
+  ]
+}

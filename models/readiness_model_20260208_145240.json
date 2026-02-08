@@ -1,0 +1,16 @@
+{
+  "timestamp": "20260208_145240",
+  "feature_names": [
+    "cgpa",
+    "aptitude_score",
+    "coding_skill",
+    "communication_skill",
+    "mock_interview_score",
+    "internships"
+  ],
+  "label_map": {
+    "Not Ready": 0,
+    "Ready": 1
+  },
+  "note": "Retrained on full dataset (no test set metrics)"
+}
