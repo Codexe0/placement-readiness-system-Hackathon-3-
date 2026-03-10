@@ -6,7 +6,7 @@ import random
 np.random.seed(42)
 random.seed(42)
 
-n = 500
+n = 10000
 rows = []
 
 for i in range(n):
