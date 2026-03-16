@@ -1,6 +1,7 @@
 *.pkl
 *.joblib
 *.db
+models/
 venv/
 __pycache__/
 .env

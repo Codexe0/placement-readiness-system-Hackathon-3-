@@ -18,11 +18,15 @@ for i in range(n):
     mock_interview = random.randint(20, 100)
     internships = random.randint(0, 3)
 
-    # Readiness rule (synthetic logic)
-    if cgpa >= 7.0 and aptitude >= 60 and coding >= 6 and communication >= 6 and mock_interview >= 60:
-        readiness = "Ready"
-    else:
-        readiness = "Not Ready"
+    # Readiness rule: Ready if at least 3 of 5 conditions pass (balanced ~50/50 split)
+    score = sum([
+        cgpa >= 7.0,
+        aptitude >= 60,
+        coding >= 6,
+        communication >= 6,
+        mock_interview >= 60,
+    ])
+    readiness = "Ready" if score >= 3 else "Not Ready"
 
     rows.append([student_id, cgpa, aptitude, coding, communication, mock_interview, internships, readiness])
 
