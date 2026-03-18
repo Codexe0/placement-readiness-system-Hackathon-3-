@@ -1,14 +1,21 @@
 import os
 import json
 import pickle
+from pathlib import Path
 from datetime import datetime
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-df = pd.read_csv(os.path.join("data", "readiness_data.csv"))
+
+def project_path(*parts):
+    return PROJECT_ROOT.joinpath(*parts)
+
+
+df = pd.read_csv(project_path("data", "readiness_data.csv"))
 X = df.drop(["student_id", "readiness"], axis=1)
 feature_names = X.columns.tolist()
 y = df["readiness"].map({"Not Ready": 0, "Ready": 1})
@@ -25,9 +32,9 @@ estimator = pipeline.named_steps["rf"]
 
 # Create timestamped artifact filename
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-model_path = os.path.join("models", f"readiness_model_{timestamp}.pkl")
-meta_path = os.path.join("models", f"readiness_model_{timestamp}.json")
-latest_model_path = os.path.join("models", "readiness_model_latest.pkl")
+model_path = project_path("models", f"readiness_model_{timestamp}.pkl")
+meta_path = project_path("models", f"readiness_model_{timestamp}.json")
+latest_model_path = project_path("models", "readiness_model_latest.pkl")
 
 artifact = {
     "model": pipeline,
@@ -44,7 +51,7 @@ metadata = {
     "note": "Retrained on full dataset (no test set metrics)",
 }
 
-os.makedirs("models", exist_ok=True)
+os.makedirs(project_path("models"), exist_ok=True)
 with open(model_path, "wb") as f:
     pickle.dump(artifact, f)
 with open(meta_path, "w") as f:

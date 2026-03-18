@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 import random
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Seed for reproducibility
 np.random.seed(42)
@@ -35,5 +38,5 @@ df = pd.DataFrame(rows, columns=[
     "communication_skill","mock_interview_score","internships","readiness"
 ])
 
-df.to_csv("data/readiness_data.csv", index=False)
+df.to_csv(PROJECT_ROOT / "data" / "readiness_data.csv", index=False)
 print("Readiness dataset generated!")

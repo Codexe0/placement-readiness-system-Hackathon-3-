@@ -1,6 +1,7 @@
 import os
 import json
 import pickle
+from pathlib import Path
 from datetime import datetime
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -21,7 +22,14 @@ from sklearn.metrics import (
 # ------------------------------------------------------------------
 # Load and prepare data
 # ------------------------------------------------------------------
-df = pd.read_csv(os.path.join("data", "readiness_data.csv"))
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
+def project_path(*parts):
+    return PROJECT_ROOT.joinpath(*parts)
+
+
+df = pd.read_csv(project_path("data", "readiness_data.csv"))
 
 X = df.drop(["student_id", "readiness"], axis=1)
 feature_names = X.columns.tolist()
@@ -81,7 +89,7 @@ print(f"\nBest model: {best_name} (accuracy={results[best_name]['accuracy']:.4f}
 # ------------------------------------------------------------------
 # Package and save the best model
 # ------------------------------------------------------------------
-os.makedirs("models", exist_ok=True)
+os.makedirs(project_path("models"), exist_ok=True)
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 # Extract raw estimator for feature importance plots in the dashboard
@@ -100,17 +108,17 @@ artifact = {
 }
 
 # Primary path used by the dashboard
-best_model_path = os.path.join("models", "readiness_model.pkl")
+best_model_path = project_path("models", "readiness_model.pkl")
 with open(best_model_path, "wb") as f:
     pickle.dump(artifact, f)
 
 # Legacy path kept for backward compatibility
-latest_model_path = os.path.join("models", "readiness_model_latest.pkl")
+latest_model_path = project_path("models", "readiness_model_latest.pkl")
 with open(latest_model_path, "wb") as f:
     pickle.dump(artifact, f)
 
 # Timestamped archive copy
-model_path = os.path.join("models", f"readiness_model_{timestamp}.pkl")
+model_path = project_path("models", f"readiness_model_{timestamp}.pkl")
 with open(model_path, "wb") as f:
     pickle.dump(artifact, f)
 
@@ -128,7 +136,7 @@ model_updates = {
     "models_tested": results,
     "best_model": best_name,
 }
-updates_path = os.path.join("models", "model_updates.json")
+updates_path = project_path("models", "model_updates.json")
 with open(updates_path, "w") as f:
     json.dump(model_updates, f, indent=2)
 print(f"Model comparison report saved to {updates_path}")
@@ -136,7 +144,7 @@ print(f"Model comparison report saved to {updates_path}")
 # ------------------------------------------------------------------
 # Save per-run metadata JSON (legacy format used by dashboard expander)
 # ------------------------------------------------------------------
-meta_path = os.path.join("models", f"readiness_model_{timestamp}.json")
+meta_path = project_path("models", f"readiness_model_{timestamp}.json")
 metadata = {
     "timestamp": timestamp,
     "accuracy": results[best_name]["accuracy"],

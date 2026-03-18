@@ -2,6 +2,7 @@ import os
 import json
 import glob
 import pickle
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -13,10 +14,16 @@ import streamlit as st
 st.set_page_config(page_title="Placement Readiness Analytics", layout="wide")
 st.title("Placement Readiness Analytics Dashboard")
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
+def project_path(*parts):
+    return PROJECT_ROOT.joinpath(*parts)
+
 # ------------------------------------------------------------------
 # Load dataset
 # ------------------------------------------------------------------
-df = pd.read_csv(os.path.join("data", "readiness_data.csv"))
+df = pd.read_csv(project_path("data", "readiness_data.csv"))
 
 # ------------------------------------------------------------------
 # Top-level KPI metrics
@@ -37,9 +44,9 @@ st.divider()
 # ------------------------------------------------------------------
 # Load model artifact – prefer new primary path, fall back to legacy
 # ------------------------------------------------------------------
-MODEL_PATH   = os.path.join("models", "readiness_model.pkl")
-LEGACY_PATH  = os.path.join("models", "readiness_model_latest.pkl")
-UPDATES_PATH = os.path.join("models", "model_updates.json")
+MODEL_PATH = project_path("models", "readiness_model.pkl")
+LEGACY_PATH = project_path("models", "readiness_model_latest.pkl")
+UPDATES_PATH = project_path("models", "model_updates.json")
 
 
 def _load_artifact(path):
@@ -54,12 +61,12 @@ def _load_artifact(path):
 artifact = _load_artifact(MODEL_PATH) or _load_artifact(LEGACY_PATH)
 
 # Show model metadata in a collapsible expander
-meta_files = sorted(glob.glob(os.path.join("models", "readiness_model_*.json")), reverse=True)
+meta_files = sorted(glob.glob(str(project_path("models", "readiness_model_*.json"))), reverse=True)
 if meta_files:
     try:
         with open(meta_files[0], "r") as f:
             model_meta = json.load(f)
-        with st.expander("📊 Model Information"):
+        with st.expander("Model Information"):
             st.write(f"**Timestamp**: {model_meta.get('timestamp', 'N/A')}")
             if "accuracy" in model_meta:
                 st.write(f"**Accuracy**: {model_meta['accuracy']:.4f}")
@@ -80,7 +87,7 @@ tab1, tab2, tab3, tab4 = st.tabs(
 # ══════════════════════════════════════════════════════════════════
 with tab1:
     st.subheader("Dataset Preview")
-    st.dataframe(df.sample(10))
+    st.dataframe(df.sample(min(10, len(df))))
 
     st.subheader("Class Distribution")
     dist = df["readiness"].value_counts()
@@ -296,10 +303,13 @@ with tab4:
             pred  = model.predict(X_pred)[0]
             label = inv_label_map.get(pred, str(pred))
             if label == "Ready":
-                st.success("✅ Placement Ready")
+                st.success("You are placement ready.")
             else:
-                st.error("❌ Not Ready – Needs Improvement")
+                st.error("Not ready yet. Needs improvement.")
 
 st.caption("Model predictions are indicative and based on synthetic data.")
+
+
+
 
 

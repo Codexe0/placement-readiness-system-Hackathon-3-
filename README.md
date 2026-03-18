@@ -4,36 +4,49 @@ This repository contains a simple end-to-end placement readiness demo: synthetic
 
 Quick commands (Windows PowerShell)
 
-1. Create virtual environment and install dependencies
+0. Move into the project folder (required)
+
+```powershell
+cd "Hackathon 3"
+```
+
+1. Create virtual environment and install dependencies (no activation required)
 
 ```powershell
 python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Optional: if you want activation in PowerShell
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
 ```
 
 2. Generate synthetic data
 
 ```powershell
-python scripts\data_generator.py
+.\.venv\Scripts\python.exe scripts\data_generator.py
 ```
 
 3. Train model (creates `models/readiness_model.pkl`)
 
 ```powershell
-python scripts\train_model.py
+.\.venv\Scripts\python.exe scripts\train_model.py
 ```
 
 4. Run a sample prediction
 
 ```powershell
-python scripts\predict.py
+.\.venv\Scripts\python.exe scripts\predict.py
 ```
 
 5. Run the Streamlit dashboard
 
 ```powershell
-streamlit run dashboard\app.py
+.\.venv\Scripts\python.exe -m streamlit run dashboard\app.py
 ```
 
 ---

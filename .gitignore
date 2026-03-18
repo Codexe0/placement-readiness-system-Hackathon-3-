@@ -3,5 +3,6 @@
 *.db
 models/
 venv/
+.venv/
 __pycache__/
 .env
