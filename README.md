@@ -1,16 +1,87 @@
-# Placement Readiness Assessment — Project README
+<div align="center">
 
-This repository contains a simple end-to-end placement readiness demo: synthetic data generation, model training (with preprocessing pipeline), and a Streamlit dashboard for inspection and prediction.
+# 🎓 Placement Readiness Assessment System
 
-Quick commands (Windows PowerShell)
+### *ML-Powered Campus Placement Prediction & Analytics*
 
-0. Move into the project folder (required)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.43-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-1.6-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)](https://scikit-learn.org)
+[![Plotly](https://img.shields.io/badge/Plotly-6.0-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com)
+
+---
+
+An end-to-end machine learning system that predicts whether a student is **Placement Ready** or **Not Ready** based on academic performance and employability skills — complete with a **premium interactive Streamlit dashboard**.
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [✨ Features](#-features)
+- [🏗️ Project Structure](#️-project-structure)
+- [🚀 Quick Start](#-quick-start)
+- [📊 Dashboard](#-dashboard)
+- [🤖 Models & Metrics](#-models--metrics)
+- [🔄 What's New in v1.1](#-whats-new-in-v11)
+- [📅 Model Update & Retraining Timeline](#-model-update--retraining-timeline-next-6-weeks)
+- [⚡ Retraining Trigger Rules](#-retraining-trigger-rules)
+- [🛠️ Tech Stack](#️-tech-stack)
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|:---|:---|
+| 🧪 **Synthetic Data Generation** | Balanced dataset with score-based readiness rules (~56/44 split) |
+| 🤖 **Multi-Model Training** | Trains & compares Logistic Regression, Decision Tree, and Random Forest |
+| 📊 **Interactive Dashboard** | Dark-themed Streamlit app with Plotly charts, glassmorphism UI, and live predictions |
+| 🏆 **Auto Best Model Selection** | Selects highest-accuracy model and saves it automatically |
+| 📈 **Rich Analytics** | Correlation heatmaps, feature importance, readiness distributions, boxplots |
+| 🔮 **Real-time Predictions** | Input student details → get ML-powered readiness prediction with confidence % |
+| 📋 **Model Versioning** | Every training run is archived with metrics in `model_updates.json` |
+
+---
+
+## 🏗️ Project Structure
+
+```
+Hackathon 3/
+├── 📂 dashboard/
+│   └── app.py                  # Streamlit dashboard (premium UI)
+├── 📂 data/
+│   └── readiness_data.csv      # Synthetic student dataset
+├── 📂 database/
+│   └── db_connection.py        # SQL database connection utility
+├── 📂 models/
+│   ├── readiness_model.pkl     # Best trained model (primary)
+│   ├── model_updates.json      # Model comparison report
+│   └── *.pkl / *.json          # Timestamped model archives
+├── 📂 scripts/
+│   ├── data_generator.py       # Synthetic data generation
+│   ├── train_model.py          # Multi-model training pipeline
+│   ├── predict.py              # CLI prediction script
+│   └── retrain_model.py        # Model retraining utility
+├── requirements.txt
+├── AIM_OR_PURPOSE.md
+└── README.md
+```
+
+---
+
+## 🚀 Quick Start
+
+> **Prerequisites:** Python 3.10+ on Windows PowerShell
+
+**0. Move into the project folder**
 
 ```powershell
 cd "Hackathon 3"
 ```
 
-1. Create virtual environment and install dependencies (no activation required)
+**1. Create virtual environment & install dependencies**
 
 ```powershell
 python -m venv .venv
@@ -18,32 +89,35 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-Optional: if you want activation in PowerShell
+<details>
+<summary>💡 Optional: Activate the virtual environment in PowerShell</summary>
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\.venv\Scripts\Activate.ps1
 ```
 
-2. Generate synthetic data
+</details>
+
+**2. Generate synthetic data**
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\data_generator.py
 ```
 
-3. Train model (creates `models/readiness_model.pkl`)
+**3. Train model** *(creates `models/readiness_model.pkl`)*
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\train_model.py
 ```
 
-4. Run a sample prediction
+**4. Run a sample prediction**
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\predict.py
 ```
 
-5. Run the Streamlit dashboard
+**5. Launch the dashboard** 🚀
 
 ```powershell
 .\.venv\Scripts\python.exe -m streamlit run dashboard\app.py
@@ -51,10 +125,61 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ---
 
-## What Has Been Improved (v1.1)
+## 📊 Dashboard
+
+The Streamlit dashboard features a **premium dark-themed UI** with glassmorphism styling, interactive Plotly charts, and a modern layout.
+
+### Dashboard Tabs
+
+| Tab | What It Shows |
+|:---|:---|
+| 📋 **Data Overview** | Dataset preview, class distribution chart |
+| 📈 **Insights** | Readiness distribution, CGPA boxplots, aptitude & CGPA histograms, correlation heatmap, feature importance |
+| ⚡ **Model Comparison** | Side-by-side metrics (Accuracy, Precision, Recall, F1) for all models + accuracy ranking |
+| 🔮 **Prediction** | Input student details → ML prediction with confidence score and animated result card |
+
+### UI Highlights
+
+- 🌑 **Dark gradient theme** with frosted-glass card effects
+- 📊 **Interactive Plotly charts** — hover, zoom, pan
+- 🏆 **4 KPI metric cards** — Total Students, Ready %, Not Ready %, Avg CGPA
+- 🎯 **Confidence percentage** on predictions via `predict_proba`
+- ✨ **Micro-animations** on hover and result display
+- 🎨 **Google Fonts (Inter)** for clean typography
+
+---
+
+## 🤖 Models & Metrics
+
+Three models are trained and compared on every run:
+
+| Model | Pipeline |
+|:---|:---|
+| **Logistic Regression** | StandardScaler → LogisticRegression (max_iter=500) |
+| **Decision Tree** | StandardScaler → DecisionTreeClassifier |
+| **Random Forest** | StandardScaler → RandomForestClassifier |
+
+**Metrics tracked per model:** Accuracy · Precision · Recall · F1 Score
+
+The best model (by accuracy) is automatically saved to `models/readiness_model.pkl` and consumed by the dashboard.
+
+### Input Features
+
+| Feature | Range | Description |
+|:---|:---|:---|
+| `cgpa` | 5.0 – 10.0 | Cumulative Grade Point Average |
+| `aptitude_score` | 30 – 100 | Aptitude test score |
+| `coding_skill` | 1 – 10 | Self-rated coding proficiency |
+| `communication_skill` | 1 – 10 | Self-rated communication ability |
+| `mock_interview_score` | 20 – 100 | Mock interview performance |
+| `internships` | 0 – 3 | Number of internships completed |
+
+---
+
+## 🔄 What's New in v1.1
 
 | Area | Change |
-|---|---|
+|:---|:---|
 | **Data generation** | Switched from strict AND-rule (~5% Ready) to score-based rule (≥3/5 conditions) — gives a balanced ~56/44 split |
 | **Model training** | Now trains and compares three models: Logistic Regression, Decision Tree, Random Forest |
 | **Metrics tracked** | Accuracy, Precision, Recall, F1 Score for every model |
@@ -62,13 +187,14 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 | **Model comparison report** | Written to `models/model_updates.json` after every training run |
 | **Dashboard — Insights tab** | Added readiness distribution bar chart, CGPA boxplot, aptitude histogram, colour-mapped correlation heatmap, feature importance chart |
 | **Dashboard — Model Comparison tab** | Grouped bar chart (all 4 metrics) + accuracy ranking chart, reads live from `model_updates.json` |
-| **Dashboard — Prediction tab** | Output now shows ✅ Placement Ready / ❌ Not Ready clearly |
+| **Dashboard — Prediction tab** | Output now shows ✅ Placement Ready / ❌ Not Ready with confidence percentage |
+| **Dashboard — UI** | Premium dark theme with glassmorphism, Plotly interactive charts, animated result cards |
 
 ---
 
-## Model Update & Retraining Timeline (Next 6 Weeks)
+## 📅 Model Update & Retraining Timeline (Next 6 Weeks)
 
-This section addresses the professor's feedback:  
+> This section addresses the professor's feedback:  
 > *"There needs to be clear goals about updates and retrainings of the model, with a timeline, for the next four to six weeks."*
 
 ### Week 1 (Mar 17 – Mar 23) — Baseline Stabilisation
@@ -121,13 +247,38 @@ This section addresses the professor's feedback:
 
 ---
 
-### Retraining Trigger Rules
+## ⚡ Retraining Trigger Rules
 
 Outside the scheduled weeks, retrain the model immediately if any of these occur:
 
 | Trigger | Action |
-|---|---|
+|:---|:---|
 | Accuracy drops below **85%** on test set | Investigate data quality, retune and retrain |
 | A new feature is added to the dataset | Retrain all models from scratch |
 | Dataset size grows beyond **15,000 rows** | Retrain and re-evaluate cross-validation scores |
 | A new model type is added | Full comparison run, update `model_updates.json` |
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|:---|:---|
+| **Python 3.10+** | Core language |
+| **pandas** | Data manipulation |
+| **NumPy** | Numerical operations |
+| **scikit-learn** | Model training, pipelines, evaluation |
+| **Streamlit** | Interactive web dashboard |
+| **Plotly** | Interactive visualisations |
+| **matplotlib** | Static chart fallback |
+| **SQL** | Data storage layer |
+
+---
+
+<div align="center">
+
+**Made with ❤️ for Hackathon 3**
+
+*Placement Readiness Assessment System · v1.1*
+
+</div>
